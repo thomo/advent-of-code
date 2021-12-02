@@ -1,13 +1,11 @@
 import days.Day01
+import days.Day02
 import java.io.File
 
 fun main(args: Array<String>) {
-    val app = Day01()
+    val app = Day02()
 
-    app.run(readFileAsLinesUsingUseLines("inputd01.txt"))
-
-    //d15 app.run("10,16,6,0,1,17")
-
+    app.run(readFileAsLinesUsingUseLines("inputd02.txt"))
 }
 
 fun readFileAsLinesUsingUseLines(fileName: String): List<String>
