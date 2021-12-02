@@ -1,0 +1,10 @@
+**/libs
+**/out
+
+**/.idea
+
+**/log.txt
+**/*.log
+
+**/input*[^t].txt
+**/input.txt
