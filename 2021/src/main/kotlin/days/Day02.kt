@@ -9,7 +9,6 @@ class Day02 {
 
         val result2 = analyse2(lines)
         println("2: $result2")
-
     }
 
     fun analyse2(lines: List<String>): Int {
