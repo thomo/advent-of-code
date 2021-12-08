@@ -11,13 +11,7 @@ class Day07 : DayX {
 
     fun readHorizontalPositions(line: String) = line.split(",").map { it.toInt() }
 
-    fun calcTargetPositions(hp: List<Int>): Int {
-        val min = hp.minOf { it }
-        val max = hp.maxOf { it }
-
-
-        return (min..max).map { i -> Pair(i, calcFuel(hp, i)) }.minByOrNull { it.second }!!.first
-    }
+    fun calcTargetPositions(hp: List<Int>) = hp.sorted().get(hp.size / 2)
 
     override fun analyse2(lines: List<String>): Any {
         val hp = readHorizontalPositions(lines[0])
