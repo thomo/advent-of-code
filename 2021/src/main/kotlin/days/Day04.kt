@@ -1,6 +1,6 @@
 package days
 
-class Day04 : DayX {
+class Day04 : Day00 {
 
     data class BoardRow(private val row: List<String>) {
         fun hasNumber(number: String) = row.any { v -> v == number }

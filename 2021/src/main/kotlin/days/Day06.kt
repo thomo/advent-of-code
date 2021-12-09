@@ -1,6 +1,6 @@
 package days
 
-class Day06 : DayX {
+class Day06 : Day00 {
     data class Group(val key: Int, val size: Long) {
         fun nextDay() = Group(if (key == 0) 6 else key - 1, size)
     }

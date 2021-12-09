@@ -2,7 +2,7 @@ package days
 
 import java.awt.Point
 
-class Day05 : DayX {
+class Day05 : Day00 {
     override fun analyse(lines: List<String>): Any {
         var map: Map<Point, Int> = emptyMap()
         lines

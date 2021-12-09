@@ -1,6 +1,6 @@
 package days
 
-class Day03 : DayX {
+class Day03 : Day00 {
     override fun analyse(lines: List<String>): Any {
         val bg = bitGravity(lines)
         // 1: 1071734

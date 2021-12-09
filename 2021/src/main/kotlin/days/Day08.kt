@@ -1,6 +1,6 @@
 package days
 
-class Day08 : DayX {
+class Day08 : Day00 {
     override fun analyse(lines: List<String>) = lines
         .map { it.split('|')[1].trim() }
         .map { right ->

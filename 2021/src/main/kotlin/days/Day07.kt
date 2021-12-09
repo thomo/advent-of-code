@@ -1,6 +1,6 @@
 package days
 
-class Day07 : DayX {
+class Day07 : Day00 {
     override fun analyse(lines: List<String>): Any {
         val hp = readHorizontalPositions(lines[0])
         val tp = calcTargetPositions(hp)
