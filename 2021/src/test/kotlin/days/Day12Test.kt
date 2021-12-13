@@ -87,6 +87,6 @@ internal class Day12Test {
 
     @Test
     fun analyse2() {
-        //assertEquals(3509, cut.analyse2(input))
+        assertEquals(3509, cut.analyse2(input))
     }
 }
