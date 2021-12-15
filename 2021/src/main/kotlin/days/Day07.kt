@@ -28,7 +28,6 @@ class Day07 : DayX {
         val min = hp.minOf { it }
         val max = hp.maxOf { it }
 
-
         return (min..max).map { i -> Pair(i, calcFuel2(hp, i)) }.minByOrNull { it.second }!!
     }
 

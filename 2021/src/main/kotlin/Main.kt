@@ -1,10 +1,10 @@
-import days.Day13
+import days.Day14
 import days.DayX
 import java.io.File
 
 fun main(args: Array<String>) {
-    val app: DayX = Day13()
-    val lines = readFileAsLinesUsingUseLines("inputd13.txt")
+    val app: DayX = Day14()
+    val lines = readFileAsLinesUsingUseLines("inputd14.txt")
 
     val result = app.analyse(lines)
     println("1: $result")
