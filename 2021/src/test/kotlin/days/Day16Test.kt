@@ -43,6 +43,14 @@ internal class Day16Test {
         assertEquals(expected, cut.getType(binString))
     }
 
+    @ParameterizedTest(name = "subPacketInfo {0}")
+    @CsvSource(
+        "110100101111111000101000,2021", // literal
+    )
+    internal fun evalPacketValue(input: String, expectedResult: Long) {
+        assertEquals(expectedResult, cut.subPacketInfo(input).value)
+    }
+
     @ParameterizedTest(name = "analyse {0}")
     @CsvSource(
         "D2FE28,6",
@@ -55,8 +63,18 @@ internal class Day16Test {
         assertEquals(expectedResult, cut.analyse(listOf(input)))
     }
 
-    @Test
-    fun analyse2() {
-        assertEquals(0, cut.analyse2(input))
+    @ParameterizedTest(name = "analyse2 {0}")
+    @CsvSource(
+        "C200B40A82,3",
+        "04005AC33890,54",
+        "880086C3E88112,7",
+        "CE00C43D881120,9",
+        "D8005AC2A8F0,1",
+        "F600BC2D8F,0",
+        "9C005AC2F8F0,0",
+        "9C0141080250320F1802104A08,1"
+    )
+    fun analyse2(input: String, expectedResult: Long) {
+        assertEquals(expectedResult, cut.analyse2(listOf(input)))
     }
 }

@@ -6,7 +6,7 @@ private const val OFFSET_CONTENT = 6
 
 class Day16 : Day00 {
 
-    data class ContentInfo(val contentLength: Int, val subVersionSum: Int)
+    data class ContentInfo(val contentLength: Int, val subVersionSum: Int, val value: Long)
 
     fun parseHexInput(hex: String) =
         hex.toCharArray().map { it.toString().toInt(16).toString(2).padStart(LITERAL_PACKET, '0') }.joinToString("")
@@ -17,77 +17,99 @@ class Day16 : Day00 {
 
     fun getType(binString: String) = bin2int(binString.substring(3, OFFSET_CONTENT))
 
-    private fun getLiteralPacketInfo(content: String): ContentInfo {
+    fun getLiteralPacketInfo(content: String): ContentInfo {
         var takeChunk = true
-        val length = content.chunked(5)
+        val subs = content.chunked(5)
             .takeWhile { it ->
                 val result = takeChunk
                 if (it[0] == '0') takeChunk = false
                 result
-            }.sumOf { it.length }
-        return ContentInfo(length, 0)
+            }
+        val length = subs.sumOf { it.length }
+        val value = subs.map { it.drop(1) }.joinToString("").toLong(2)
+        return ContentInfo(length, 0, value)
     }
 
-    private fun subPacketInfo(type: Int, content: String) =
-        when (type) {
-            LITERAL_PACKET -> getLiteralPacketInfo(content)
-            else /* operator */ -> getOperatorPacketInfo(content)
+    fun subPacketInfo(packetsContent: String): ContentInfo {
+        val version = getVersion(packetsContent)
+        val type = getType(packetsContent)
+
+        val subInfo = when (type) {
+            LITERAL_PACKET -> getLiteralPacketInfo(packetsContent.drop(OFFSET_CONTENT))
+            else /* operator */ -> getOperatorPacketInfo(type, packetsContent.drop(OFFSET_CONTENT))
         }
 
-    private fun getOperatorPacketInfo(content: String) =
-        if (content[0] == '0')
-            getOperatorWithLengthInfo(content)
-        else
-            getOperatorWithNumberInfo(content)
+        return ContentInfo(OFFSET_CONTENT + subInfo.contentLength, version + subInfo.subVersionSum, subInfo.value)
+    }
 
-    private fun getOperatorWithLengthInfo(content: String): ContentInfo {
+    private fun getOperatorPacketInfo(type: Int, content: String) =
+        if (content[0] == '0')
+            getOperatorWithLengthInfo(type, content)
+        else
+            getOperatorWithNumberInfo(type, content)
+
+    private fun getOperatorWithLengthInfo(type: Int, content: String): ContentInfo {
         val lengthOfPackages = content.drop(1).take(15).toInt(2)
         var packetsContent = content.drop(16).take(lengthOfPackages)
 
+        val subValues = mutableListOf<Long>()
         var subVersionSum = 0
         var i = 0
         while (i < lengthOfPackages) {
-            val version = getVersion(packetsContent)
-            val type = getType(packetsContent)
-            val subInfo = subPacketInfo(type, packetsContent.drop(OFFSET_CONTENT))
-            val subLength = OFFSET_CONTENT + subInfo.contentLength
-            i += subLength
-            packetsContent = packetsContent.drop(subLength)
-            subVersionSum += (version + subInfo.subVersionSum)
+            val subInfo = subPacketInfo(packetsContent)
+
+            packetsContent = packetsContent.drop(subInfo.contentLength)
+            subVersionSum += subInfo.subVersionSum
+            subValues.add(subInfo.value)
+
+            i += subInfo.contentLength
         }
-        return ContentInfo(lengthOfPackages + 16, subVersionSum)
+
+        return ContentInfo(16 + lengthOfPackages, subVersionSum, evalSubValues(type, subValues))
     }
 
-    private fun getOperatorWithNumberInfo(content: String): ContentInfo {
+    private fun evalSubValues(type: Int, subValues: MutableList<Long>) = when (type) {
+        0 -> subValues.sum()
+        1 -> subValues.fold(1L) { acc, i -> acc * i }
+        2 -> subValues.minOf { it }
+        3 -> subValues.maxOf { it }
+        5 -> if (subValues[0] > subValues[1]) 1 else 0
+        6 -> if (subValues[0] < subValues[1]) 1 else 0
+        7 -> if (subValues[0] == subValues[1]) 1 else 0
+        else -> 0
+    }
+
+    private fun getOperatorWithNumberInfo(type: Int, content: String): ContentInfo {
         val numberOfPackages = content.drop(1).take(11).toInt(2)
         var packetsContent = content.drop(12)
 
-        var packetsLength = 12
+        val subValues = mutableListOf<Long>()
+        var packetsLength = 0
         var subVersionSum = 0
         var i = 0
         while (i < numberOfPackages) {
-            val version = getVersion(packetsContent)
-            val type = getType(packetsContent)
-            val subInfo = subPacketInfo(type, packetsContent.drop(OFFSET_CONTENT))
-            val subLength = OFFSET_CONTENT + subInfo.contentLength
-            i += 1
+            val subInfo = subPacketInfo(packetsContent)
+            val subLength = subInfo.contentLength
             packetsContent = packetsContent.drop(subLength)
             packetsLength += subLength
-            subVersionSum += (version + subInfo.subVersionSum)
+            subVersionSum += subInfo.subVersionSum
+            subValues.add(subInfo.value)
+
+            i += 1
         }
-        return ContentInfo(packetsLength, subVersionSum)
+        return ContentInfo(12 + packetsLength, subVersionSum, evalSubValues(type, subValues))
     }
 
     override fun analyse(lines: List<String>): Any {
         val binString = parseHexInput(lines[0])
-        val version = getVersion(binString)
-        val type = getType(binString)
-        val info = subPacketInfo(type, binString.substring(OFFSET_CONTENT))
-        return version + info.subVersionSum
+        val info = subPacketInfo(binString)
+        return info.subVersionSum
     }
 
     override fun analyse2(lines: List<String>): Any {
-        TODO("Not yet implemented")
+        val binString = parseHexInput(lines[0])
+        val info = subPacketInfo(binString)
+        return info.value
     }
 
 }
