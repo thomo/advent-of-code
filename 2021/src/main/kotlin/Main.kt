@@ -1,9 +1,9 @@
-import days.Day17
+import days.Day18
 import java.io.File
 
 fun main(args: Array<String>) {
-    val app = Day17()
-    val lines = readFileAsLinesUsingUseLines("inputd17.txt")
+    val app = Day18()
+    val lines = readFileAsLinesUsingUseLines("inputd18.txt")
 
     val result = app.analyse(lines)
     println("1: $result")
