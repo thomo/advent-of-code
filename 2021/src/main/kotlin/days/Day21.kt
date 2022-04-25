@@ -43,76 +43,48 @@ class Day21 : Day00 {
     override fun analyse2(lines: List<String>): Any {
         var (p1, p2) = parse(lines)
 
+        val p1Wins = playQuantumDie(p1, 0, 1).groupBy { it }.mapValues { me -> me.value.size.toLong() }
+        val p2Wins = playQuantumDie(p2, 0, 1).groupBy { it }.mapValues { me -> me.value.size.toLong() }
+        println(p1Wins)
+        println(p2Wins)
 
+        printUniverse(p1Wins, p2Wins)
+
+//        val p1WinsUni = wins(p1Wins, 1)
+//        val p1Loose = loose(p1WinsUni, 1)
+//        val p2WinsUni = wins(p2Wins, 1)
+//        val p2Loose = loose(p2WinsUni, 3)
+        return 0L
+    }
+
+    private fun printUniverse(p1Wins: Map<Int, Long>, p2Wins: Map<Int, Long>) {
+        val m = max(p1Wins.keys.maxOf { it } * 2 - 1, p2Wins.keys.maxOf { it } * 2)
+
+    }
+
+    private fun wins(p1Wins: Map<Int, Long>, i: Int): Map<Int, Long> {
         TODO()
-
     }
 
-
-    fun analyse2_firstTry(lines: List<String>): Any {
-        var (p1, p2) = parse(lines)
-
-        var uni1 = emptyUni()
-        var uni2 = emptyUni()
-
-        uni1[p1][p1] = 1
-        p1 = incPosition(p1)
-        uni1[p1][points(p1)] = 1
-        p1 = incPosition(p1)
-        uni1[p1][points(p1)] = 1
-        uni2[p2][p2] = 1
-        p2 = incPosition(p2)
-        uni2[p2][points(p2)] = 1
-        p2 = incPosition(p2)
-        uni2[p2][points(p2)] = 1
-
-        val total1 = play(uni1)
-        val total2 = 0L // play(uni2)
-        return max(total1, total2)
+    private fun loose(winner: Map<Int, Long>, startCount: Int): Map<Int, Long> {
+        TODO("Not yet implemented")
     }
 
-    private fun play(uniStart: Array<Array<Long>>): Long {
-        var uni = uniStart
-        var total = 0L
-        do {
-            //printUni(uni)
-            val unew = rollDiracDice(uni)
-            total += unew.map { space -> space[21] }.sum()
-            unew.forEach { space -> space[21] = 0 }
-            uni = unew
-            printUni(uni)
-            println(total)
-        } while (uni.any { space -> space.any { games -> games > 0 } })
-        return total
-    }
+    private fun playQuantumDie(pos: Int, points: Int, round: Int): List<Int> {
 
-    private fun printUni(uni: Array<Array<Long>>) {
-        uni.forEachIndexed { i, space ->
-            println("${i}: " + space.contentToString())
-        }
-        println("-".repeat(20))
-    }
+        if (points >= 21) return listOf(round)
 
-    private fun rollDiracDice(uni: Array<Array<Long>>): Array<Array<Long>> {
-        val result = emptyUni()
-        uni.forEachIndexed { i, space ->
-            space.forEachIndexed { j, games ->
-                if (games > 0) {
-                    var spacePos = incPosition(i)
-                    var newPoints = Math.min(21, j + spacePos)
-                    result[spacePos][newPoints] = uni[spacePos][newPoints] + games
-                    spacePos = incPosition(spacePos)
-                    newPoints = Math.min(21, j + spacePos)
-                    result[spacePos][newPoints] += (uni[spacePos][newPoints] + games)
-                    spacePos = incPosition(spacePos)
-                    newPoints = Math.min(21, j + spacePos)
-                    result[spacePos][newPoints] += (uni[spacePos][newPoints] + games)
-                }
-            }
-        }
+        val result = mutableListOf<Int>()
+        val pos1 = incPosition(pos)
+        result.addAll(playQuantumDie(pos1, points + points(pos1), round + 1))
+
+        val pos2 = incPosition(pos1)
+        result.addAll(playQuantumDie(pos2, points + points(pos2), round + 1))
+
+        val pos3 = incPosition(pos2)
+        result.addAll(playQuantumDie(pos3, points + points(pos3), round + 1))
+
         return result
     }
-
-    private fun emptyUni() = Array(10) { _ -> Array(22) { _ -> 0L } }
 
 }
