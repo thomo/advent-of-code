@@ -1,15 +1,20 @@
-import days.Day23
+import days.Day11
 import java.io.File
 
-fun main(args: Array<String>) {
-    val app = Day23()
-    val lines = readFileAsLinesUsingUseLines("inputd23.txt")
+fun main() {
+	val app = Day11()
+	val lines = readFileAsLinesUsingUseLines("inputd11.txt")
 
-    val result = app.analyse(lines)
-    println("1: $result")
+	val startTime = System.currentTimeMillis()
+	val result = app.analyse(lines)
+	println("result 1: $result")
+	println("analysis1 duration: " + (System.currentTimeMillis() - startTime))
+	println("---------------------------------------------")
 
-    val result2 = app.analyse2(lines)
-    println("2: $result2")
+	val startTime2 = System.currentTimeMillis()
+	val result2 = app.analyse2(lines)
+	println("result 2: $result2")
+	println("analysis2 duration: " + (System.currentTimeMillis() - startTime2))
 }
 
 fun readFileAsLinesUsingUseLines(fileName: String): List<String> = File(fileName).useLines { it.toList() }
