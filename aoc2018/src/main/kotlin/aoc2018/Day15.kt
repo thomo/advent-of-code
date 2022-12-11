@@ -3,7 +3,6 @@ package aoc2018
 import aoc.days.DayXX
 import aoc.util.dd.Cell
 import aoc.util.dd.Coord
-import java.io.File
 
 data class Creature(val id: Int, val type: Char, val x: Int, val y: Int, val hp: Int) {
 	fun attack(attackPower: Int) = Creature(id, type, x, y, if ((hp - attackPower) < 0) 0 else (hp - attackPower))
