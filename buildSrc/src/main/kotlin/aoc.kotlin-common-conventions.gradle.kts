@@ -1,15 +1,16 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+	id("org.jetbrains.kotlin.jvm")
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
+	testImplementation("org.hamcrest:hamcrest:2.2")
+	testImplementation("org.junit.jupiter:junit-jupiter:5.9.1")
 }
 
 tasks.named<Test>("test") {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
