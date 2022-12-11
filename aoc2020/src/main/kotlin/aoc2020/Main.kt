@@ -3,8 +3,8 @@ package aoc2020
 import aoc.util.readFileAsLinesUsingUseLines
 
 fun main() {
-	val app = Day01()
-	val lines = readFileAsLinesUsingUseLines("aoc2020", "inputd01.txt")
+	val app = Day08()
+	val lines = readFileAsLinesUsingUseLines("aoc2020", "inputd08.txt")
 
 	val startTime = System.currentTimeMillis()
 	val result = app.analyse(lines)
