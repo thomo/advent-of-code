@@ -1,12 +1,12 @@
 plugins {
-    id("aoc.kotlin-application-conventions")
+	id("aoc.kotlin-application-conventions")
 }
 
 dependencies {
-    implementation(project(":utilities"))
+	implementation(project(":utilities"))
 }
 
 application {
-    // Define the main class for the application.
-    mainClass.set("aoc.app.AppKt")
+	mainClass.set("aoc2020.MainKt")
 }
+
