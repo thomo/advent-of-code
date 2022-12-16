@@ -21,13 +21,24 @@ internal class Day11Test {
 	}
 
 	@Test
+	fun t1() {
+		val field = (
+				listOf(-3, 4, 2, 2, 2).mapIndexed { i, v -> Pair(Coord(i + 1, 1), v) } +
+						listOf(-4, 4, 3, 3, 4).mapIndexed { i, v -> Pair(Coord(i + 1, 2), v) } +
+						listOf(-5, 3, 3, 4, -4).mapIndexed { i, v -> Pair(Coord(i + 1, 3), v) } +
+						listOf(4, 3, 3, 4, -3).mapIndexed { i, v -> Pair(Coord(i + 1, 4), v) } +
+						listOf(3, 3, 3, -5, -1).mapIndexed { i, v -> Pair(Coord(i + 1, 5), v) }
+				).toMap()
+		assertEquals(3 + 4 + 4 + 3 + 3, cut.edgePower(field, 2, 2, 3))
+	}
+
+	@Test
 	fun analyse() {
-		assertEquals(Coord(33, 45), cut.a1(18, 300, 3))
+		assertEquals(Coord(33, 45), cut.solve1(18, 300, 3))
 	}
 
 	@Test
 	fun analyse2() {
-		TODO()
-		//assertEquals(listOf(232, 251, 12), cut.a2(42, 300))
+		assertEquals(listOf(232, 251, 12), cut.solve2(42, 300))
 	}
 }
